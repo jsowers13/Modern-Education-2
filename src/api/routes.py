@@ -156,10 +156,10 @@ def update_employee_info(id):
     
     return (jsonify(record_to_update.serialize())), 200
 
-    @api.route('/schools/<int:id>', methods=['DELETE'])
-    def delete_bootcamp(id):
-        bootcamp = School.query.get(id)
-        db.session.delete(bootcamp)
-        db.session.commit()
+@api.route('/schools/<int:id>', methods=['DELETE'])
+def delete_employee(id):
+    bootcamp = School.query.get(id)
+    db.session.delete(bootcamp)
+    db.session.commit()
 
-        return "successfully deleted bootcamp record"
+    return "successfully deleted employee record"

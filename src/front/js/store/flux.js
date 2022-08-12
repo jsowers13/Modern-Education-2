@@ -146,7 +146,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.log("Could not delete record", error);
         }
-        // window.location.reload(false);
+        window.location.reload(false);
       },
 
       getColleges: async () => {
