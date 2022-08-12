@@ -90,6 +90,65 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error occurred while creating new bootcamp", error);
         }
       },
+      updateBootcamp: async (
+        id,
+        name,
+        logo,
+        description,
+        website,
+        phone_number,
+        school_email,
+        mailing_address,
+        career_options,
+        housing_available,
+        job_placement_available,
+        job_placement_guarantee,
+        accept_GI_Bill,
+        length_in_weeks,
+        tuition,
+        minimum_skill_level,
+        scholarships_available
+      ) => {
+        try {
+          await fetch(process.env.BACKEND_URL + "/api/schools/" + id, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name,
+              logo,
+              description,
+              website,
+              phone_number,
+              school_email,
+              mailing_address,
+              career_options,
+              housing_available,
+              job_placement_available,
+              job_placement_guarantee,
+              accept_GI_Bill,
+              length_in_weeks,
+              tuition,
+              minimum_skill_level,
+              scholarships_available,
+            }),
+          });
+        } catch (error) {
+          console.log("Error occurred while creating new bootcamp", error);
+        }
+      },
+      deleteBootcamp: async (id) => {
+        try {
+          await fetch(process.env.BACKEND_URL + "/api/schools/" + id, {
+            method: "DELETE",
+          });
+        } catch (error) {
+          console.log("Could not delete record", error);
+        }
+        // window.location.reload(false);
+      },
+
       getColleges: async () => {
         try {
           const res = await fetch(
@@ -228,11 +287,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       // },
       getBootCampsByID: async (id) => {
         console.log(id);
-        const response = await fetch(process.env.BACKEND_URL + `/api/schools/`);
+        const response = await fetch(
+          process.env.BACKEND_URL + `/api/schools/` + id
+        );
         const data = await response.json();
-        setStore({ schools: data[id - 1] });
-        console.log(data[id - 1]);
-        return data[id - 1];
+
+        return data;
       },
     },
   };

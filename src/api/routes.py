@@ -81,10 +81,10 @@ def get_all_schools():
 
 @api.route('/schools/<id>', methods=['GET'])
 def get_single_school(id):
-    single_school = School.query.filter_by(id=="id")
+    single_school = School.query.get(id)
     print(single_school)
 
-    return jsonify(single_school), 200
+    return jsonify(single_school.serialize()), 200
 
 @api.route('/schools', methods=['POST'])
 def create_Bootcamp():
@@ -112,3 +112,54 @@ def create_Bootcamp():
     db.session.commit()
 
     return (jsonify(bootcamp.serialize())), 201
+
+@api.route('/schools/<id>', methods=['PUT'])
+def update_employee_info(id):
+    record_to_update = School.query.get(id)
+    
+    name = request.json["name"]
+    logo = request.json["logo"]
+    description = request.json["description"]
+    website = request.json["website"]
+    phone_number = request.json["phone_number"]
+    school_email = request.json["school_email"]
+    mailing_address = request.json["mailing_address"]
+    career_options = request.json["career_options"]
+    housing_available = request.json["housing_available"]
+    job_placement_available = request.json["job_placement_available"]
+    job_placement_guarantee = request.json["job_placement_guarantee"]
+    accept_GI_Bill = request.json["accept_GI_Bill"]
+    length_in_weeks = request.json["length_in_weeks"]
+    tuition = request.json["tuition"]
+    minimum_skill_level = request.json["minimum_skill_level"]
+    scholarships_available = request.json["scholarships_available"]
+
+
+    record_to_update.name = name
+    record_to_update.logo = logo
+    record_to_update.description = description
+    record_to_update.website = website
+    record_to_update.phone_number = phone_number
+    record_to_update.school_email = school_email
+    record_to_update.mailing_address = mailing_address
+    record_to_update.career_options = career_options
+    record_to_update.housing_available = housing_available
+    record_to_update.job_placement_available = job_placement_available
+    record_to_update.job_placement_guarantee = job_placement_guarantee
+    record_to_update.accept_GI_Bill = accept_GI_Bill
+    record_to_update.length_in_weeks = length_in_weeks
+    record_to_update.tuition = tuition
+    record_to_update.minimum_skill_level = minimum_skill_level
+    record_to_update.scholarships_available = scholarships_available
+    
+    db.session.commit()
+    
+    return (jsonify(record_to_update.serialize())), 200
+
+    @api.route('/schools/<int:id>', methods=["DELETE"])
+    def delete_bootcamp(id):
+        bootcamp = School.query.get(id)
+        db.session.delete(bootcamp)
+        db.session.commit()
+
+        return "successfully deleted bootcamp record"

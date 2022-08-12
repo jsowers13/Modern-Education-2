@@ -14,6 +14,7 @@ import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Admin } from "./pages/admin";
+import { UpdateSchool } from "./pages/update";
 
 //create your first component
 const Layout = () => {
@@ -35,6 +36,7 @@ const Layout = () => {
             <Route element={<Login />} path="/login" />
             <Route element={<User />} path="/user" />
             <Route element={<Admin />} path="/admin" />
+            <Route element={<UpdateSchool />} path="/admin/update/:id" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
         </ScrollToTop>

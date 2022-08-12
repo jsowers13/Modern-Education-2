@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../store/appContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Image } from "react-bootstrap";
 import { Footer } from "../component/footer";
 import "../../styles/admin.css";
 
-export const Admin = () => {
+export const UpdateSchool = () => {
   const { store, actions } = useContext(Context);
-  const [tableData, setTableData] = useState([]);
+  const [currentBootCamp, setCurrentBootCamp] = useState(null);
   const [bootCampName, setBootCampName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [description, setDescription] = useState("");
@@ -25,10 +25,12 @@ export const Admin = () => {
   const [skillLevel, setSkillLevel] = useState("");
   const [scholarshipsAvail, setScholarshipsAvail] = useState("");
   const navigate = useNavigate();
+  const params = useParams();
 
   const submitform = (e) => {
     e.preventDefault();
-    actions.createBootcamp(
+    actions.updateBootcamp(
+      params.id,
       bootCampName,
       logoUrl,
       description,
@@ -46,28 +48,49 @@ export const Admin = () => {
       skillLevel,
       scholarshipsAvail
     );
+    // alert("BootCamp Updated Successfully");
     // navigate("/admin");
     // window.location.reload(false);
   };
-  //generate table showing API data of bootcamps
+  //fetch data of bootcamp to be updated and populate form with data
   useEffect(() => {
     async function fetchData() {
-      const data = await actions.getSchools();
-      setTableData(store.schools);
-      console.log(tableData.length);
+      const data = await actions.getBootCampsByID(params.id);
+      setCurrentBootCamp(data);
+      setBootCampName(data.name);
+      setLogoUrl(data.logo);
+      setDescription(data.description);
+      setWebsite(data.website);
+      setPhoneNumber(data.phone_number);
+      setEmail(data.school_email);
+      setAddress(data.mailing_address);
+      setCareerOptions(data.career_options);
+      setHousingAvailable(data.housing_available);
+      setJobPlaceAvail(data.job_placement_available);
+      setJobPlaceGuar(data.job_placement_guarantee);
+      setGiBill(data.accept_GI_Bill);
+      setProgramLength(data.length_in_weeks);
+      setTuition(data.tuition);
+      setSkillLevel(data.minimum_skill_level);
+      setScholarshipsAvail(data.scholarships_available);
+
       return data;
     }
     fetchData();
   }, []);
 
-  //   Old way of returning intervening with react hook
-  //   if (tableData.length == 0) {
-  //     return <h1>No BootCamp Data to Display. Create a New Bootcamp Above</h1>;
-  //   }
+  if (currentBootCamp == null) {
+    return (
+      <Image
+        className="mx-auto d-block"
+        src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
+      />
+    );
+  }
 
   if (store.activeUser) {
     return (
-      <div className="container-fluid pt-5" id="admindiv">
+      <div className="container">
         <form onSubmit={submitform}>
           <div className="form-group mb-3">
             <label htmlFor="bootCampNameInput" className="h5">
@@ -77,6 +100,7 @@ export const Admin = () => {
               id="bootCampNameInput"
               className="form-control"
               placeholder="BootCamp Name"
+              value={bootCampName}
               onChange={(e) => setBootCampName(e.target.value)}
             ></input>
           </div>
@@ -88,6 +112,7 @@ export const Admin = () => {
               id="logoUrlInput"
               className="form-control"
               placeholder="Last Name"
+              value={logoUrl}
               onChange={(e) => setLogoUrl(e.target.value)}
             ></input>
           </div>
@@ -100,6 +125,7 @@ export const Admin = () => {
               id="descriptionInput"
               className="form-control"
               placeholder="Description"
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></input>
           </div>
@@ -112,6 +138,7 @@ export const Admin = () => {
               id="websiteInput"
               className="form-control"
               placeholder="Website"
+              value={website}
               onChange={(e) => setWebsite(e.target.value)}
             ></input>
           </div>
@@ -124,6 +151,7 @@ export const Admin = () => {
               id="phoneNumberInput"
               className="form-control"
               placeholder="Phone Number"
+              value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             ></input>
           </div>
@@ -136,6 +164,7 @@ export const Admin = () => {
               id="emailInput"
               className="form-control"
               placeholder="Email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></input>
           </div>
@@ -148,6 +177,7 @@ export const Admin = () => {
               id="addressInput"
               className="form-control"
               placeholder="Address"
+              value={address}
               onChange={(e) => setAddress(e.target.value)}
             ></input>
           </div>
@@ -160,6 +190,7 @@ export const Admin = () => {
               id="careerOptionsInput"
               className="form-control"
               placeholder="Career Options"
+              value={careerOptions}
               onChange={(e) => setCareerOptions(e.target.value)}
             ></input>
           </div>
@@ -172,6 +203,7 @@ export const Admin = () => {
               id="housingAvailableInput"
               className="form-control"
               placeholder="Housing Available"
+              value={housingAvailable}
               onChange={(e) => setHousingAvailable(e.target.value)}
             ></input>
           </div>
@@ -184,6 +216,7 @@ export const Admin = () => {
               id="jobPlaceAvailInput"
               className="form-control"
               placeholder="Yes/No"
+              value={jobPlaceAvail}
               onChange={(e) => setJobPlaceAvail(e.target.value)}
             ></input>
           </div>
@@ -196,6 +229,7 @@ export const Admin = () => {
               id="jobPlaceAvailInput"
               className="form-control"
               placeholder="Yes/No"
+              value={jobPlaceGuar}
               onChange={(e) => setJobPlaceGuar(e.target.value)}
             ></input>
           </div>
@@ -208,6 +242,7 @@ export const Admin = () => {
               id="giBillInput"
               className="form-control"
               placeholder="Yes/No"
+              value={giBill}
               onChange={(e) => setGiBill(e.target.value)}
             ></input>
           </div>
@@ -219,6 +254,7 @@ export const Admin = () => {
               type="number"
               id="lengthInput"
               className="form-control"
+              value={programLength}
               onChange={(e) => setProgramLength(e.target.value)}
             ></input>
           </div>
@@ -230,6 +266,7 @@ export const Admin = () => {
               type="number"
               id="tuitionInput"
               className="form-control"
+              value={tuition}
               onChange={(e) => setTuition(e.target.value)}
             ></input>
           </div>
@@ -242,6 +279,7 @@ export const Admin = () => {
               id="skillLevelInput"
               className="form-control"
               placeholder="Skill Level"
+              value={skillLevel}
               onChange={(e) => setSkillLevel(e.target.value)}
             ></input>
           </div>
@@ -254,85 +292,14 @@ export const Admin = () => {
               id="scholarshipsInput"
               className="form-control"
               placeholder="Yes/No"
+              value={scholarshipsAvail}
               onChange={(e) => setScholarshipsAvail(e.target.value)}
             ></input>
           </div>
           <button type="submit" className="btn btn-primary">
-            Create School
+            Update School
           </button>
         </form>
-        {tableData.length == 0 ? (
-          <h1 className="text-white">
-            No BootCamp Data to Display. Create a New Bootcamp Above
-          </h1>
-        ) : (
-          <table className="table table-hover table-striped mb-5">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>BootCamp Name</th>
-                <th>Logo URL</th>
-                <th>Description</th>
-                <th>Website</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Career Options</th>
-                <th>Housing Available</th>
-                <th>JP Avail</th>
-                <th>JP Guar</th>
-                <th>Accept GI</th>
-                <th>Length Wks</th>
-                <th>Tuition</th>
-                <th>Skill Level</th>
-                <th>Scholarships</th>
-                <th className="text-center">Edit</th>
-                <th className="text-center">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableData.map((bootcamp, index) => {
-                return (
-                  <tr key={bootcamp.id}>
-                    <td>{bootcamp.id}</td>
-                    <td>{bootcamp.name}</td>
-                    <td>{bootcamp.logo}</td>
-                    <td>{bootcamp.description}</td>
-                    <td>{bootcamp.website}</td>
-                    <td>{bootcamp.phone_number}</td>
-                    <td>{bootcamp.school_email}</td>
-                    <td>{bootcamp.mailing_address}</td>
-                    <td>{bootcamp.career_options}</td>
-                    <td>{bootcamp.housing_available}</td>
-                    <td>{bootcamp.job_placement_available}</td>
-                    <td>{bootcamp.job_placement_guarantee}</td>
-                    <td>{bootcamp.accept_GI_Bill}</td>
-                    <td>{bootcamp.length_in_weeks}</td>
-                    <td>{bootcamp.tuition}</td>
-                    <td>{bootcamp.minimum_skill_level}</td>
-                    <td>{bootcamp.scholarships_available}</td>
-                    <td className="text-center">
-                      <Link to={"/admin/update/" + bootcamp.id}>
-                        <i
-                          className="fa-solid fa-file-pen text-black"
-                          type="button"
-                        ></i>
-                      </Link>
-                    </td>
-                    <td className="text-center">
-                      <i
-                        className="fa-solid fa-trash-can"
-                        onClick={() => {
-                          actions.deleteBootcamp(bootcamp.id);
-                        }}
-                      ></i>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
 
         <Footer />
       </div>
