@@ -15,6 +15,7 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Admin } from "./pages/admin";
 import { UpdateSchool } from "./pages/update";
+import { AdminCert } from "./component/adminlogin";
 
 //create your first component
 const Layout = () => {
@@ -35,10 +36,12 @@ const Layout = () => {
             <Route element={<Signup />} path="/signup" />
             <Route element={<Login />} path="/login" />
             <Route element={<User />} path="/user" />
+            <Route element={<AdminCert />} path="/adminlogin" />
             <Route element={<Admin />} path="/admin" />
             <Route element={<UpdateSchool />} path="/admin/update/:id" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
+          <Footer />
         </ScrollToTop>
       </BrowserRouter>
     </div>

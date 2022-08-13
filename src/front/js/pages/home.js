@@ -16,6 +16,7 @@ import {
 } from "../component/paragraphs.js";
 
 import { Video } from "../component/videos";
+import { Footer } from "../component/footer";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);

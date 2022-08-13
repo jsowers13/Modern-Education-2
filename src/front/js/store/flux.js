@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
+      masterPasscode: "JS1822",
       message: null,
       activeUser: sessionStorage.getItem("activeUser"),
       demo: [
@@ -20,6 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       schools: [],
       colleges: [],
       combined_array: [],
+      admintoken: sessionStorage.getItem("admintoken"),
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -191,7 +193,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           throw Error("Wrong email or password");
         }
       },
-
+      getAdminToken: (passcode) => {
+        sessionStorage.setItem("admintoken", passcode);
+        setStore({ admintoken: sessionStorage.getItem("admintoken") });
+        console.log(getStore().admintoken);
+        return getStore().admintoken;
+      },
       getToken: async (username, password) => {
         try {
           const resp = await fetch(process.env.BACKEND_URL + "/api/login", {

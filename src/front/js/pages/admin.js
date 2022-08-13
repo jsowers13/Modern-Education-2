@@ -49,6 +49,11 @@ export const Admin = () => {
     // navigate("/admin");
     // window.location.reload(false);
   };
+  const adminLogout = () => {
+    sessionStorage.clear();
+    navigate("/");
+    location.reload();
+  };
   //generate table showing API data of bootcamps
   useEffect(() => {
     async function fetchData() {
@@ -65,9 +70,12 @@ export const Admin = () => {
   //     return <h1>No BootCamp Data to Display. Create a New Bootcamp Above</h1>;
   //   }
 
-  if (store.activeUser) {
+  if (store.admintoken) {
     return (
       <div className="container-fluid pt-5" id="admindiv">
+        <button className="btn btn-lg btn-danger mb-5" onClick={adminLogout}>
+          Logout
+        </button>
         <form onSubmit={submitform}>
           <div className="form-group mb-3">
             <label htmlFor="bootCampNameInput" className="h5">
@@ -333,15 +341,15 @@ export const Admin = () => {
             </tbody>
           </table>
         )}
-
-        <Footer />
       </div>
     );
-  } else
+  } else {
+    console.log(store.adminToken);
     return (
       <div className="container">
         <h1>You do not have permissions to view this page</h1>
         <Link to="/">Back to Home</Link>
       </div>
     );
+  }
 };

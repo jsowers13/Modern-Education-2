@@ -1,13 +1,25 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/login.css";
 
 export const Signup = () => {
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const signInOk = await actions.createUser(userName, password);
+
+    if (signInOk) {
+      navigate("/user");
+    } else {
+      alert("Unable to sign in correctly");
+    }
+  };
 
   return (
     <div className="container d-flex justify-content-center vh-100">
@@ -48,7 +60,7 @@ export const Signup = () => {
         <a
           href="#"
           className="btn btn-primary btn-lg m-auto"
-          onClick={() => actions.createUser(userName, password)}
+          onClick={handleSignUp}
         >
           Sign Up
         </a>

@@ -30,7 +30,7 @@ export const Login = () => {
     // }
   };
   if (store.activeUser) {
-    history.push("/user");
+    navigate("/user");
     location.reload();
   } else {
     return (
